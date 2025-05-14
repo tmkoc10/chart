@@ -6,6 +6,7 @@ import { HeroHeader } from '@/components/hero-header'
 import LogoCloud from '@/components/logo-cloud'
 import Features from '@/components/features-4'
 import IntegrationsSection from '@/components/integrations-7'
+import PricingComparator from '@/components/pricing-comparator'
 import FooterSection from '@/components/footer'
 
 export default function HeroSection() {
@@ -44,16 +45,16 @@ export default function HeroSection() {
                                 <div className="lg:h-176 relative skew-x-[.36rad]">
                                     <div
                                         aria-hidden
-                                        className="bg-linear-to-b from-background to-background z-1 absolute -inset-16 via-transparent sm:-inset-32"
+                                        className="bg-linear-to-b from-background to-background z-1 absolute inset-0 via-transparent"
                                     />
                                     <div
                                         aria-hidden
-                                        className="bg-linear-to-r from-background to-background z-1 absolute -inset-16 bg-background/50 via-transparent sm:-inset-32 dark:bg-transparent"
+                                        className="bg-linear-to-r from-background to-background z-1 absolute inset-0 bg-background/50 via-transparent dark:bg-transparent"
                                     />
 
                                     <div
                                         aria-hidden
-                                        className="absolute -inset-16 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:24px_24px] [--color-border:var(--color-zinc-400)] sm:-inset-32 dark:[--color-border:color-mix(in_oklab,var(--color-white)_20%,transparent)]"
+                                        className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:24px_24px] [--color-border:var(--color-zinc-400)] dark:[--color-border:color-mix(in_oklab,var(--color-white)_20%,transparent)]"
                                     />
                                     <div
                                         aria-hidden
@@ -69,16 +70,16 @@ export default function HeroSection() {
                                     />
 
                                     <Image
-                                        className="rounded-(--radius) z-1 relative border dark:hidden"
+                                        className="rounded-(--radius) z-1 relative border border-black/20 dark:hidden"
                                         src="/card.png"
-                                        alt="Tailark hero section"
+                                        alt="Algoz Tech hero section"
                                         width={2880}
                                         height={2074}
                                     />
                                     <Image
-                                        className="rounded-(--radius) z-1 relative hidden border dark:block"
+                                        className="rounded-(--radius) z-1 relative hidden border border-black/20 dark:block"
                                         src="/dark-card.webp"
-                                        alt="Tailark hero section"
+                                        alt="Algoz Tech hero section"
                                         width={2880}
                                         height={2074}
                                     />
@@ -96,6 +97,9 @@ export default function HeroSection() {
 
                 {/* Integrations Section */}
                 <IntegrationsSection />
+
+                {/* Comparator Section */}
+                <PricingComparator />
 
                 {/* Footer Section */}
                 <FooterSection />
