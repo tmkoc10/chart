@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Session, User } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
 import { useNotification } from './notification-provider'
+import { getSiteUrl } from '@/lib/utils/site-url'
 
 interface AuthContextType {
   user: User | null
@@ -54,18 +55,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (email: string, password: string) => {
     try {
       setIsLoading(true)
-      
+
       // Pre-validate email format to catch common issues
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       if (!emailRegex.test(email)) {
         throw new Error('Please enter a valid email address')
       }
-      
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth?verified=true`,
+          emailRedirectTo: `${getSiteUrl()}/auth?verified=true`,
         },
       })
 
@@ -75,10 +76,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       router.push('/auth')
     } catch (error: unknown) {
       console.error('Sign up error:', error)
-      
+
       // Handle specific errors with more user-friendly messages
       const errorMessage = error instanceof Error ? error.message : 'Failed to sign up';
-      
+
       if (errorMessage.includes('email')) {
         showNotification('error', 'Please enter a valid email address', 5000)
       } else if (errorMessage.includes('password')) {
@@ -110,7 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       router.push('/dashboard')
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to sign in';
-      
+
       if (errorMessage.includes('Invalid login credentials')) {
         showNotification('error', 'No account found. Please create one.', 5000)
       } else {
@@ -124,12 +125,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signInWithGoogle = async () => {
     try {
       setIsLoading(true)
-      
+
       // Explicitly set scopes to request email access
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth?provider=google`,
+          redirectTo: `${getSiteUrl()}/auth?provider=google`,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -139,11 +140,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
 
       if (error) throw error
-      
+
       if (!data?.url) {
         throw new Error("Failed to get authorization URL")
       }
-      
+
       // We could also use a window.location.href = data.url approach instead of relying on supabase's redirect
       console.log("Redirecting to Google auth:", data.url)
     } catch (error: unknown) {
@@ -156,21 +157,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signInWithGithub = async () => {
     try {
       setIsLoading(true)
-      
+
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-          redirectTo: `${window.location.origin}/auth?provider=github`,
+          redirectTo: `${getSiteUrl()}/auth?provider=github`,
           scopes: 'user:email'
         }
       })
 
       if (error) throw error
-      
+
       if (!data?.url) {
         throw new Error("Failed to get authorization URL")
       }
-      
+
       console.log("Redirecting to GitHub auth:", data.url)
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to sign in with GitHub';
@@ -209,10 +210,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext)
-  
+
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider')
   }
-  
+
   return context
-} 
+}
