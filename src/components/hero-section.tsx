@@ -32,7 +32,7 @@ export default function HeroSection() {
                             <Button
                                 asChild
                                 size="lg">
-                                <Link href="#">
+                                <Link href="/auth">
                                     <span className="btn-label">Start Building</span>
                                 </Link>
                             </Button>
@@ -69,20 +69,24 @@ export default function HeroSection() {
                                         className="z-2 absolute inset-0 size-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,transparent_40%,var(--color-background)_100%)]"
                                     />
 
-                                    <Image
-                                        className="rounded-(--radius) z-1 relative border border-black/20 dark:hidden"
-                                        src="/card.png"
-                                        alt="Algoz Tech hero section"
-                                        width={2880}
-                                        height={2074}
-                                    />
-                                    <Image
-                                        className="rounded-(--radius) z-1 relative hidden border border-black/20 dark:block"
-                                        src="/dark-card.webp"
-                                        alt="Algoz Tech hero section"
-                                        width={2880}
-                                        height={2074}
-                                    />
+                                    <div className="relative z-1 dark:hidden outline outline-2 outline-black rounded-(--radius) overflow-hidden">
+                                        <Image
+                                            className="rounded-(--radius) z-1 relative w-full h-auto"
+                                            src="/card.png"
+                                            alt="Algoz Tech hero section"
+                                            width={2880}
+                                            height={2074}
+                                        />
+                                    </div>
+                                    <div className="relative z-1 hidden dark:block outline outline-2 outline-white rounded-(--radius) overflow-hidden">
+                                        <Image
+                                            className="rounded-(--radius) z-1 relative w-full h-auto"
+                                            src="/dark-card.webp"
+                                            alt="Algoz Tech hero section"
+                                            width={2880}
+                                            height={2074}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>

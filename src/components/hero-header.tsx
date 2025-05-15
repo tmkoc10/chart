@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { Logo } from '@/components/logo'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Sun, Moon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { cn } from '@/lib/utils'
@@ -16,6 +16,37 @@ const menuItems = [
 export const HeroHeader = () => {
     const [menuState, setMenuState] = React.useState(false)
     const [isScrolled, setIsScrolled] = React.useState(false)
+    const [theme, setTheme] = React.useState<'light' | 'dark'>('light')
+
+    // Initialize theme from localStorage and system preference
+    React.useEffect(() => {
+        // Check if theme is stored in localStorage
+        const storedTheme = localStorage.getItem('theme')
+
+        if (storedTheme) {
+            // Use stored theme preference
+            setTheme(storedTheme as 'light' | 'dark')
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Use system preference if no stored preference
+            setTheme('dark')
+        }
+    }, [])
+
+    // Apply theme class to document
+    React.useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+        // Save theme preference to localStorage
+        localStorage.setItem('theme', theme)
+    }, [theme])
+
+    // Toggle theme function
+    const toggleTheme = () => {
+        setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light')
+    }
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -74,31 +105,38 @@ export const HeroHeader = () => {
                                             </Link>
                                         </li>
                                     ))}
+                                    <li className="flex items-center">
+                                        <button
+                                            onClick={toggleTheme}
+                                            className="text-muted-foreground hover:text-accent-foreground flex items-center gap-2 duration-150"
+                                            aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>
+                                            {theme === 'light' ? (
+                                                <Sun className="size-4" />
+                                            ) : (
+                                                <Moon className="size-4" />
+                                            )}
+                                            <span>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+                                        </button>
+                                    </li>
                                 </ul>
                             </div>
                             <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
                                 <Button
-                                    asChild
-                                    variant="outline"
-                                    size="sm"
-                                    className={cn(isScrolled && 'lg:hidden')}>
-                                    <Link href="#">
-                                        <span>Login</span>
-                                    </Link>
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={toggleTheme}
+                                    className="mr-1"
+                                    aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>
+                                    {theme === 'light' ? (
+                                        <Sun className="size-5" />
+                                    ) : (
+                                        <Moon className="size-5" />
+                                    )}
                                 </Button>
                                 <Button
                                     asChild
-                                    size="sm"
-                                    className={cn(isScrolled && 'lg:hidden')}>
-                                    <Link href="#">
-                                        <span>Sign Up</span>
-                                    </Link>
-                                </Button>
-                                <Button
-                                    asChild
-                                    size="sm"
-                                    className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}>
-                                    <Link href="#">
+                                    size="sm">
+                                    <Link href="/auth">
                                         <span>Get Started</span>
                                     </Link>
                                 </Button>
