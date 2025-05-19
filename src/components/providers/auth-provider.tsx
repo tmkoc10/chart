@@ -108,7 +108,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       showNotification('success', 'Signed in successfully', 3000)
-      router.push('/dashboard')
+      router.push('/charts')
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to sign in';
 

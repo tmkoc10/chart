@@ -8,6 +8,7 @@ import Features from '@/components/features-4'
 import IntegrationsSection from '@/components/integrations-7'
 import PricingComparator from '@/components/pricing-comparator'
 import FooterSection from '@/components/footer'
+import { Globe } from '@/components/magicui/globe'
 
 export default function HeroSection() {
     return (
@@ -26,8 +27,8 @@ export default function HeroSection() {
                 <section className="overflow-hidden bg-background dark:bg-transparent">
                     <div className="relative mx-auto max-w-5xl px-6 pt-40 pb-28 lg:pt-36 lg:pb-24">
                         <div className="relative z-10 mx-auto max-w-2xl text-center">
-                            <h1 className="text-balance text-4xl font-semibold md:text-5xl lg:text-6xl">Modern Software testing reimagined</h1>
-                            <p className="mx-auto my-8 max-w-2xl text-xl">Officiis laudantium excepturi ducimus rerum dignissimos, and tempora nam vitae, excepturi ducimus iste provident dolores.</p>
+                            <h1 className="text-4xl font-semibold md:text-5xl lg:text-6xl">Charts. Chat. Code. Trade.</h1>
+                            <p className="mx-auto my-8 max-w-2xl text-xl"> Design, test, and deploy AI-driven trading strategies — powered by real-time charts </p>
 
                             <Button
                                 asChild
@@ -89,6 +90,15 @@ export default function HeroSection() {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Globe Section */}
+                <section className="relative w-full overflow-visible mt-40 mb-0">
+                    <div className="container mx-auto" style={{ height: '600px' }}>
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+                            <Globe className="z-0" />
                         </div>
                     </div>
                 </section>

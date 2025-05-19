@@ -4,13 +4,13 @@ import Image from 'next/image'
 
 export default function LogoCloud() {
     return (
-        <section className="bg-background overflow-hidden py-16">
+        <section className="bg-background overflow-hidden">
             <div className="group relative m-auto max-w-7xl px-6">
                 <div className="flex flex-col items-center md:flex-row">
                     <div className="md:max-w-44 md:border-r md:pr-6">
-                        <p className="text-end text-sm font-medium text-muted-foreground">Trusted by leading companies</p>
+                        <p className="text-end text-sm font-medium text-muted-foreground">Trusted by 110+ brokers</p>
                     </div>
-                    <div className="relative py-6 md:w-[calc(100%-11rem)]">
+                    <div className="relative md:w-[calc(100%-11rem)]">
                         <InfiniteSlider
                             speedOnHover={20}
                             speed={40}

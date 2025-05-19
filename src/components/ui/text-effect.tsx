@@ -7,7 +7,7 @@ import {
   Transition,
   Variant,
   Variants,
-} from 'motion/react';
+} from 'framer-motion';
 import React from 'react';
 
 export type PresetType = 'blur' | 'fade-in-blur' | 'scale' | 'fade' | 'slide';
@@ -177,30 +177,32 @@ const createVariantsWithTransition = (
 ): Variants => {
   if (!transition) return baseVariants;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { exit, ...mainTransition } = transition;
+  // Create a simplified version that doesn't produce complex union types
+  const visibleTransition = {
+    ...(baseVariants.visible && typeof baseVariants.visible === 'object' && 'transition' in baseVariants.visible
+      ? baseVariants.visible.transition
+      : {}),
+    ...transition
+  };
+
+  const exitTransition = {
+    ...(baseVariants.exit && typeof baseVariants.exit === 'object' && 'transition' in baseVariants.exit
+      ? baseVariants.exit.transition
+      : {}),
+    ...transition,
+    staggerDirection: -1
+  };
 
   return {
     ...baseVariants,
     visible: {
       ...baseVariants.visible,
-      transition: {
-        ...(hasTransition(baseVariants.visible)
-          ? baseVariants.visible.transition
-          : {}),
-        ...mainTransition,
-      },
+      transition: visibleTransition
     },
     exit: {
       ...baseVariants.exit,
-      transition: {
-        ...(hasTransition(baseVariants.exit)
-          ? baseVariants.exit.transition
-          : {}),
-        ...mainTransition,
-        staggerDirection: -1,
-      },
-    },
+      transition: exitTransition
+    }
   };
 };
 
