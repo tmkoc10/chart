@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Code, BarChart2, Settings, Grid, Building, ChevronUp } from 'lucide-react';
 
 // Define the props interface
 interface ChartFooterProps {
   onItemClick: (component: string) => void;
+  isDragging?: boolean;
+  shouldBlurButtons?: boolean;
 }
 
-export default function ChartFooter({ onItemClick }: ChartFooterProps) {
+export default function ChartFooter({ onItemClick, isDragging = false, shouldBlurButtons = false }: ChartFooterProps) {
   const [expandedState, setExpandedState] = useState(false);
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   
+  useEffect(() => {
+    if (shouldBlurButtons && buttonRefs.current) {
+      buttonRefs.current.forEach(btn => btn && btn.blur());
+    }
+  }, [shouldBlurButtons]);
+
   // Define the new footer items as requested by the user
   const footerItems = [
     { 
@@ -68,26 +77,35 @@ export default function ChartFooter({ onItemClick }: ChartFooterProps) {
   };
 
   return (
-    <div className="bg-gradient-to-r from-[#0a0a12] via-[#111119] to-[#0a0a12] border-t border-gray-800 px-4 py-2 flex items-center h-12 shadow-[0_-4px_10px_rgba(0,0,0,0.3)] relative">
+    <div className="bg-gradient-to-r from-[#0a0a12] via-[#111119] to-[#0a0a12] border-t border-gray-800 px-4 py-0.5 flex items-center h-9 shadow-[0_-4px_10px_rgba(0,0,0,0.3)] relative">
       {/* Professional gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.4)] pointer-events-none"></div>
       
       {/* Main tools - Left aligned */}
-      <div className="flex items-center space-x-6 z-10 pl-2">
+      <div
+        className="flex items-center space-x-6 z-10 pl-2"
+        style={isDragging ? { pointerEvents: 'none', userSelect: 'none' } : {}}
+      >
         {footerItems.map((item, index) => (
           <button
             key={index}
             onClick={() => onItemClick(item.name)}
-            className={`group relative flex items-center space-x-2 px-3 py-1.5 rounded-md hover:bg-gray-900/80 focus:outline-none focus:ring-1 focus:ring-gray-700 transition-all duration-200 text-sm font-medium transform hover:-translate-y-0.5 backdrop-blur-sm border border-transparent ${getHoverBorderColor(item.color)} ${getGlowColor(item.color)}`}
+            ref={el => { buttonRefs.current[index] = el || null; }}
+            tabIndex={isDragging || shouldBlurButtons ? -1 : 0}
+            onMouseUp={e => {
+              if (isDragging || shouldBlurButtons) {
+                e.currentTarget.blur();
+              }
+            }}
+            className={`group relative flex items-center space-x-2 px-3 py-1.5 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-700 transition-all duration-200 text-sm font-medium transform backdrop-blur-sm border border-transparent`}
             title={item.description}
           >
-            <div className="transition-transform duration-300 group-hover:scale-110">
-              {item.icon}
+            <div className="transition-transform duration-300">
+              {/* Remove group-hover from icon */}
+              {React.cloneElement(item.icon, { className: undefined })}
             </div>
-            <span className="text-gray-300 group-hover:text-white transition-colors duration-300">{item.name}</span>
-            
-            {/* Subtle underline effect on hover */}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-transparent via-current to-transparent opacity-0 group-hover:opacity-70 group-hover:w-full transition-all duration-300"></div>
+            <span className="text-gray-300 transition-colors duration-300">{item.name}</span>
+            {/* Remove hover underline effect */}
           </button>
         ))}
       </div>

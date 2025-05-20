@@ -21,7 +21,7 @@ export default function ChartsPage() {
   const [isSearchPanelOpen, setIsSearchPanelOpen] = useState(false);
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
   const [isIndicatorsPanelOpen, setIsIndicatorsPanelOpen] = useState(false);
-  const [isWatchlistOpen, setIsWatchlistOpen] = useState(true); // Default to open
+  const [isWatchlistOpen, setIsWatchlistOpen] = useState(false); // Default to closed
   const [currentSymbol, setCurrentSymbol] = useState("GOLD");
   const [selectedTimeframe, setSelectedTimeframe] = useState("1D");
   const [isTimeframeDropdownOpen, setIsTimeframeDropdownOpen] = useState(false);
@@ -30,6 +30,13 @@ export default function ChartsPage() {
   
   // New state for footer panel notification
   const [footerNotification, setFooterNotification] = useState<string | null>(null);
+
+  // Add state for draggable footer panel height
+  const [footerPanelHeight, setFooterPanelHeight] = useState(0); // 0 = collapsed
+  const [isDraggingFooter, setIsDraggingFooter] = useState(false);
+  const [shouldBlurFooterButtons, setShouldBlurFooterButtons] = useState(false);
+  const chartPanelRef = useRef<HTMLDivElement | null>(null);
+  const MIN_FOOTER_HEIGHT = 48; // Minimum height for the expanded/collapsed footer panel
 
   const timeframeDropdownRef = useRef<HTMLDivElement>(null); // Ref for the timeframe dropdown
   const chartTypeDropdownRef = useRef<HTMLDivElement>(null); // Ref for the chart type dropdown
@@ -310,10 +317,43 @@ export default function ChartsPage() {
     }, 3000);
   };
 
+  // Mouse event handlers for dragging
+  useEffect(() => {
+    if (!isDraggingFooter) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      // Calculate new height from bottom of window
+      const windowHeight = window.innerHeight;
+      const newHeight = windowHeight - e.clientY;
+      setFooterPanelHeight(Math.max(MIN_FOOTER_HEIGHT, newHeight));
+    };
+    const handleMouseUp = () => {
+      setIsDraggingFooter(false);
+      // If collapsed to minimum, trigger blur for footer buttons
+      setTimeout(() => {
+        setShouldBlurFooterButtons(true);
+      }, 0);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDraggingFooter]);
+
+  // Reset shouldBlurFooterButtons after one render
+  useEffect(() => {
+    if (shouldBlurFooterButtons) {
+      setShouldBlurFooterButtons(false);
+    }
+  }, [shouldBlurFooterButtons]);
+
   return (
     <div className="flex flex-col w-full h-screen max-h-screen"> {/* Outermost container, full viewport height */}
+      {/* Header Divider */}
+      <div style={{width: '100%', height: '3px', background: '#363A45', borderRadius: '2px'}} />
       {/* Professional and elegant header */}
-      <header className="w-full px-4 py-1.5 h-12 bg-black border-b border-gray-800 flex-shrink-0 flex items-center justify-between shadow-md"> 
+      <header className="w-full px-4 py-0.5 h-9 bg-black">
         <div className="flex items-center space-x-2"> 
           {/* Profile icon - replacing the dashboard icon */}
           <Button 
@@ -324,10 +364,8 @@ export default function ChartsPage() {
           >
             <User className="h-4 w-4 text-gray-100" />
           </Button>
-          
           {/* Visual Separator */}
-          <div className="h-5 w-px bg-gray-700"></div>
-          
+          <div style={{height: '24px', width: '3px', background: '#363A45', borderRadius: '2px'}}></div>
           {/* Symbol search button - improved styling */}
           <Button 
             onClick={toggleSearchPanel} 
@@ -348,7 +386,7 @@ export default function ChartsPage() {
           </Button>
           
           {/* Visual Separator */}
-          <div className="h-5 w-px bg-gray-700"></div>
+          <div style={{height: '24px', width: '3px', background: '#363A45', borderRadius: '2px'}}></div>
           
           {/* Timeframe Dropdown - improved styling */}
           <div ref={timeframeDropdownRef} className="relative">
@@ -402,7 +440,7 @@ export default function ChartsPage() {
           </div>
           
           {/* Visual Separator */}
-          <div className="h-5 w-px bg-gray-700"></div>
+          <div style={{height: '24px', width: '3px', background: '#363A45', borderRadius: '2px'}}></div>
           
           {/* Chart Type Dropdown - improved styling */}
           <div ref={chartTypeDropdownRef} className="relative">
@@ -514,7 +552,7 @@ export default function ChartsPage() {
           </div>
           
           {/* Visual Separator */}
-          <div className="h-5 w-px bg-gray-700"></div>
+          <div style={{height: '24px', width: '3px', background: '#363A45', borderRadius: '2px'}}></div>
           
           {/* Indicators Button - improved styling */}
           <Button
@@ -534,7 +572,7 @@ export default function ChartsPage() {
         </div>
 
         {/* Right side - User and settings */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 absolute right-4 top-1.5">
           <Button 
             onClick={toggleSettingsPanel}
             variant="ghost" 
@@ -544,7 +582,6 @@ export default function ChartsPage() {
           >
             <Settings className="h-4 w-4 text-gray-300" />
           </Button>
-          
           <Button 
             onClick={handleLogout} 
             variant="ghost" 
@@ -558,20 +595,26 @@ export default function ChartsPage() {
       </header>
 
       {/* The rest of the UI remains the same */}
-      <div className="w-full h-px bg-gray-800 flex-shrink-0" /> {/* Thin separator line */}
+      <div className="w-full h-[3px] bg-[#363A45] flex-shrink-0" /> {/* Thick separator line */}
 
       {/* Flex container for sidebar and main content */}
       <div className="flex flex-1 overflow-hidden">
+        {/* Left Vertical Divider */}
+        <div style={{height: '100%', width: '3px', background: '#363A45', borderRadius: '2px', flexShrink: 0}} />
         <aside className="w-10 bg-background p-1 flex-shrink-0 overflow-y-auto">
           {/* Sidebar content can go here. It will be very narrow. */}
         </aside>
         {/* Vertical Divider 1 */}
-        <div className="h-full w-px bg-gray-800 flex-shrink-0" />
+        <div style={{height: '100%', width: '3px', background: '#363A45', borderRadius: '2px', flexShrink: 0}} />
 
         {/* Main content area */}
         <div className="flex flex-col flex-1 overflow-hidden relative">
-          <main className="flex-1 pt-0 overflow-hidden">
-            <div ref={chartContainerRef} className="w-full h-full" />
+          {/* Chart area, shrinks as footer panel expands */}
+          <main
+            className="flex-1 pt-0 overflow-hidden relative"
+            style={footerPanelHeight > 0 ? { height: `calc(100% - ${footerPanelHeight}px)` } : {}}
+          >
+            <div ref={chartContainerRef} className="absolute top-0 left-0 right-0 bottom-0 w-full m-0 p-0" style={{height: 'auto'}} />
             
             {/* Enhanced notification overlay */}
             {footerNotification && (
@@ -583,13 +626,56 @@ export default function ChartsPage() {
               </div>
             )}
           </main>
-          <footer className="flex-shrink-0">
-            <ChartFooter onItemClick={handleFooterButtonClick} />
-          </footer>
+          {/* Draggable Divider Above Footer */}
+          <div
+            style={{
+              width: '100%',
+              height: '6px',
+              background: '#363A45',
+              borderRadius: '3px',
+              cursor: 'ns-resize',
+              zIndex: 20,
+            }}
+            onMouseDown={() => setIsDraggingFooter(true)}
+            title="Drag to expand/collapse footer panel"
+          />
+          {/* Footer Panel (expands upward) */}
+          {footerPanelHeight > MIN_FOOTER_HEIGHT ? (
+            <div
+              style={{
+                width: '100%',
+                height: footerPanelHeight,
+                background: '#18181b',
+                borderTop: '1px solid #363A45',
+                boxShadow: '0 -4px 10px rgba(0,0,0,0.3)',
+                zIndex: 10,
+                overflow: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              {/* Footer as header (tab bar) */}
+              <ChartFooter onItemClick={handleFooterButtonClick} isDragging={isDraggingFooter} shouldBlurButtons={shouldBlurFooterButtons && footerPanelHeight <= MIN_FOOTER_HEIGHT} />
+              {/* Placeholder for selected page/component below */}
+              <div style={{flex: 1, background: '#111119', borderTop: '1px solid #363A45'}}>
+                {/* TODO: Render selected component/page here */}
+              </div>
+            </div>
+          ) : (
+            <footer className="flex-shrink-0">
+              <ChartFooter onItemClick={handleFooterButtonClick} isDragging={isDraggingFooter} shouldBlurButtons={shouldBlurFooterButtons && footerPanelHeight <= MIN_FOOTER_HEIGHT} />
+              {/* Divider below footer components */}
+              <div style={{width: '100%', height: '3px', background: '#363A45', borderRadius: '2px'}} />
+            </footer>
+          )}
         </div>
 
         {/* Right side panel with WatchlistPanel */}
-        <WatchlistPanel isOpen={isWatchlistOpen} onToggle={toggleWatchlist} />
+        <div style={{height: '100%', borderLeft: '3px solid #363A45', borderRadius: '2px', flexShrink: 0, display: 'flex', alignItems: 'stretch'}}>
+          <WatchlistPanel isOpen={isWatchlistOpen} onToggle={toggleWatchlist} />
+        </div>
+        {/* Rightmost vertical divider */}
+        <div style={{height: '100%', width: '3px', background: '#363A45', borderRadius: '2px', flexShrink: 0}} />
       </div>
       
       {/* Other components remain the same */}
