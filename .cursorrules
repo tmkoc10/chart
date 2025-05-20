@@ -1,0 +1,118 @@
+When a user prompt is received, scan for MCP-related keywords (playwright, supabase, etc.)
+IMPORTANT: Before opening any new tab or page in the browser through MCP:
+
+Check if the browser instance is already running
+Verify if the requested tab/page is already open by examining current tabs' URLs and titles
+If the requested page exists, switch to that tab instead of creating a new one
+Only open a new tab if the requested page isn't already available
+Maintain a tab registry to track open tabs and their contents for efficient switching
+
+
+IMPORTANT: Adhere strictly to the black and white color theme while ensuring professional, impressive design:
+
+All generated UI components, elements, and styles must use only black and white colors
+Create sophisticated, professional designs despite the limited color palette
+Use carefully considered contrast, typography, spacing, and layout principles
+Implement subtle animations, transitions, and micro-interactions for a premium feel
+Utilize texture, patterns, and depth techniques to create visual interest
+Ensure the black and white aesthetic appears intentional and refined, not restrictive
+
+
+IMPORTANT: Prioritize exceptional user experience and interface design:
+
+Implement smooth, fluid transitions and animations
+Ensure responsive, intuitive interactions with appropriate feedback
+Create clear visual hierarchies that guide users naturally through the interface
+Optimize load times and performance for seamless experiences
+Use thoughtful micro-interactions to delight users
+Apply accessibility best practices while maintaining aesthetic excellence
+Test all UI components for usability and smoothness of interaction
+
+
+If Playwright MCP is detected with a "go to browser" instruction:
+
+Parse the target website URL or name
+Identify the specific frontend task(s) to be performed
+Create a detailed execution plan without requesting user confirmation
+Use Playwright's browser automation capabilities to navigate to the target site
+Execute the required actions (clicks, form filling, data extraction, etc.)
+Run at least one verification test to confirm functionality
+Report completion status to the user
+
+
+If Supabase MCP is detected with data storage/retrieval instructions:
+
+Identify the data operation type (save, retrieve, update, delete)
+Determine the target data structure and content
+Formulate the necessary Supabase operations
+Execute the data operations without requesting user confirmation
+Verify successful completion with at least one test
+Report completion status to the user
+
+
+For application-related tasks:
+
+Identify the Next.js component or feature to be modified/created
+Leverage the latest Next.js innovations and component patterns
+Generate the necessary code implementation
+Test the implementation for functionality
+Report completion to the user
+Ensure all components follow the black and white theme restriction while maintaining professional quality
+
+
+When handling website references:
+
+Visit the referenced website via Playwright
+Analyze the site's structure, components, and functionality
+Extract relevant patterns or elements needed for the user's task
+Create an implementation plan based on the analysis
+Execute the plan automatically
+Test the implementation
+Report completion to the user
+Adapt any referenced designs to the black and white color scheme while enhancing the UX/UI quality
+
+
+For multi-step operations across different MCPs:
+
+Parse the complete workflow sequence
+Create a comprehensive execution plan covering all required MCPs
+Execute each step in the proper sequence without user intervention
+Perform cross-MCP verification tests
+Report the overall completion status
+
+
+Implement automatic error handling and recovery:
+
+Detect execution failures during any step
+Attempt reasonable recovery strategies
+If recovery succeeds, continue execution
+If recovery fails, report specific error details to the user
+
+
+Maintain execution context between user interactions:
+
+Track the state of previous operations
+Use context to inform subsequent operations
+Support references to previously created/modified elements
+
+
+For ambiguous instructions, prioritize the most likely interpretation:
+
+Execute the highest-probability interpretation
+Include brief explanation of the interpretation in the completion report
+
+
+Optimize performance by batching browser operations when possible:
+
+Group related DOM manipulations
+Minimize page reloads
+Use efficient selector strategies
+
+
+Apply sophisticated design principles within the black and white constraint:
+
+Use variable font weights and typography for visual interest
+Implement strategic negative space for elegant, uncluttered interfaces
+Create depth through subtle shadows, layering, and perspective
+Utilize high-quality imagery and iconography optimized for the monochrome palette
+Apply motion design principles that enhance rather than distract from the experience

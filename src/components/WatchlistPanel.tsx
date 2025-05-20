@@ -3,9 +3,10 @@ import { ChevronDown, Plus, Settings, Search, X, BookMarked } from 'lucide-react
 import './scrollbar.css';
 import { ANIMATION_DURATION, ANIMATION_EASING } from '../utils/animation';
 
-interface WatchlistPanelProps {
+export interface WatchlistPanelProps {
   isOpen: boolean;
   onToggle: () => void;
+  onSymbolSelect: (symbol: string) => void;
 }
 
 type WatchlistItem = {
@@ -16,7 +17,7 @@ type WatchlistItem = {
   changePercent: number;
 };
 
-const WatchlistPanel: React.FC<WatchlistPanelProps> = ({ isOpen, onToggle }) => {
+const WatchlistPanel: React.FC<WatchlistPanelProps> = ({ isOpen, onToggle, onSymbolSelect }) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const [watchlistItems, setWatchlistItems] = useState<WatchlistItem[]>([
     { symbol: 'GOLD', name: 'Gold Spot / U.S. Dollar', price: '3,233.50', change: 28.94, changePercent: 0.9 },
@@ -30,8 +31,10 @@ const WatchlistPanel: React.FC<WatchlistPanelProps> = ({ isOpen, onToggle }) => 
   ]);
   
   const handleSymbolClick = (symbol: string) => {
-    console.log(`Symbol clicked: ${symbol}`);
-    // Here you would implement the logic to change the chart symbol
+    onSymbolSelect(symbol);
+    if (window.innerWidth < 768) {
+      onToggle();
+    }
   };
 
   // Using TradingView-like approach with flex and fixed widths
@@ -79,7 +82,7 @@ const WatchlistPanel: React.FC<WatchlistPanelProps> = ({ isOpen, onToggle }) => 
             {watchlistItems.map((item) => (
               <div 
                 key={item.symbol} 
-                className="flex items-center px-2 py-1.5 hover:bg-[#181818] cursor-pointer border-b border-[#282828]"
+                className="flex items-center justify-between px-3 py-2 hover:bg-[#2A2A2C] cursor-pointer rounded-md"
                 onClick={() => handleSymbolClick(item.symbol)}
               >
                 <div className="flex-[0.4] text-sm font-medium text-gray-300 truncate">{item.symbol}</div>
