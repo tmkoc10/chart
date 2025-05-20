@@ -1,25 +1,45 @@
 /* Custom scrollbar styling */
-.custom-scrollbar {
+.custom-scrollbar,
+div[style*="overflow: auto"],
+div[style*="overflow-y: auto"],
+div[style*="overflow:auto"],
+div[style*="overflow-y:auto"] {
   /* Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(50, 50, 50, 0.6) transparent;
+  scrollbar-width: thin !important;
+  scrollbar-color: #000000 transparent !important;
 }
 
 /* Chrome, Edge, and Safari */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+.custom-scrollbar::-webkit-scrollbar,
+div[style*="overflow: auto"]::-webkit-scrollbar,
+div[style*="overflow-y: auto"]::-webkit-scrollbar,
+div[style*="overflow:auto"]::-webkit-scrollbar,
+div[style*="overflow-y:auto"]::-webkit-scrollbar {
+  width: 8px !important;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+.custom-scrollbar::-webkit-scrollbar-track,
+div[style*="overflow: auto"]::-webkit-scrollbar-track,
+div[style*="overflow-y: auto"]::-webkit-scrollbar-track,
+div[style*="overflow:auto"]::-webkit-scrollbar-track,
+div[style*="overflow-y:auto"]::-webkit-scrollbar-track {
+  background: transparent !important;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(50, 50, 50, 0.6);
-  border-radius: 8px;
-  border: 2px solid transparent;
+.custom-scrollbar::-webkit-scrollbar-thumb,
+div[style*="overflow: auto"]::-webkit-scrollbar-thumb,
+div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb,
+div[style*="overflow:auto"]::-webkit-scrollbar-thumb,
+div[style*="overflow-y:auto"]::-webkit-scrollbar-thumb {
+  background-color: #000000 !important;
+  border-radius: 8px !important;
+  border: 2px solid transparent !important;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(70, 70, 70, 0.8);
+.custom-scrollbar::-webkit-scrollbar-thumb:hover,
+div[style*="overflow: auto"]::-webkit-scrollbar-thumb:hover,
+div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb:hover,
+div[style*="overflow:auto"]::-webkit-scrollbar-thumb:hover,
+div[style*="overflow-y:auto"]::-webkit-scrollbar-thumb:hover {
+  background-color: #1a1a1a !important;
 }

@@ -6,9 +6,10 @@ interface ChartFooterProps {
   onItemClick: (component: string) => void;
   isDragging?: boolean;
   shouldBlurButtons?: boolean;
+  activeItem?: string; // New prop for active button
 }
 
-export default function ChartFooter({ onItemClick, isDragging = false, shouldBlurButtons = false }: ChartFooterProps) {
+export default function ChartFooter({ onItemClick, isDragging = false, shouldBlurButtons = false, activeItem = 'Broker' }: ChartFooterProps) {
   const [expandedState, setExpandedState] = useState(false);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   
@@ -18,62 +19,42 @@ export default function ChartFooter({ onItemClick, isDragging = false, shouldBlu
     }
   }, [shouldBlurButtons]);
 
-  // Define the new footer items as requested by the user
+  // Define the new footer items without colored hover effects
   const footerItems = [
     { 
       name: 'Broker', 
-      icon: <Building size={18} className="group-hover:text-blue-400 transition-colors duration-300" />,
+      icon: <Building size={18} />,
       description: "Connect to trading brokers",
-      color: "blue"
     },
     { 
       name: 'Code Compiler', 
-      icon: <Code size={18} className="group-hover:text-green-400 transition-colors duration-300" />,
+      icon: <Code size={18} />,
       description: "Write and compile trading algorithms",
-      color: "green"
     },
     { 
       name: 'Backtest', 
-      icon: <BarChart2 size={18} className="group-hover:text-purple-400 transition-colors duration-300" />,
+      icon: <BarChart2 size={18} />,
       description: "Test strategies on historical data",
-      color: "purple"
     },
     { 
       name: 'Optimization', 
-      icon: <Settings size={18} className="group-hover:text-amber-400 transition-colors duration-300" />,
+      icon: <Settings size={18} />,
       description: "Optimize trading parameters",
-      color: "amber"
     },
     { 
       name: 'Footprint', 
-      icon: <Grid size={18} className="group-hover:text-red-400 transition-colors duration-300" />,
+      icon: <Grid size={18} />,
       description: "Analyze market volume structure",
-      color: "red"
     },
   ];
 
-  // Get the color class based on the item's color
-  const getGlowColor = (color: string) => {
-    switch (color) {
-      case 'blue': return 'group-hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]';
-      case 'green': return 'group-hover:shadow-[0_0_15px_rgba(34,197,94,0.5)]';
-      case 'purple': return 'group-hover:shadow-[0_0_15px_rgba(168,85,247,0.5)]';
-      case 'amber': return 'group-hover:shadow-[0_0_15px_rgba(251,191,36,0.5)]';
-      case 'red': return 'group-hover:shadow-[0_0_15px_rgba(239,68,68,0.5)]';
-      default: return '';
+  // Get active button styles - changed to use black
+  const getActiveStyles = (name: string) => {
+    if (name === activeItem) {
+      // Use black color for active state
+      return 'bg-black border-gray-800 text-white';
     }
-  };
-
-  // Get the border color based on the item's color
-  const getHoverBorderColor = (color: string) => {
-    switch (color) {
-      case 'blue': return 'group-hover:border-blue-500/30';
-      case 'green': return 'group-hover:border-green-500/30';
-      case 'purple': return 'group-hover:border-purple-500/30';
-      case 'amber': return 'group-hover:border-amber-500/30';
-      case 'red': return 'group-hover:border-red-500/30';
-      default: return '';
-    }
+    return '';
   };
 
   return (
@@ -97,15 +78,17 @@ export default function ChartFooter({ onItemClick, isDragging = false, shouldBlu
                 e.currentTarget.blur();
               }
             }}
-            className={`group relative flex items-center space-x-2 px-3 py-1.5 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-700 transition-all duration-200 text-sm font-medium transform backdrop-blur-sm border border-transparent`}
+            className={`group relative flex items-center space-x-2 px-3 py-1.5 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-700 transition-all duration-200 text-sm font-medium transform backdrop-blur-sm border ${item.name === activeItem ? '' : 'border-transparent hover:bg-gray-900/50 hover:border-gray-800'} ${getActiveStyles(item.name)}`}
             title={item.description}
           >
             <div className="transition-transform duration-300">
-              {/* Remove group-hover from icon */}
-              {React.cloneElement(item.icon, { className: undefined })}
+              {React.cloneElement(item.icon, { 
+                className: item.name === activeItem 
+                  ? `text-white` 
+                  : `text-gray-300` 
+              })}
             </div>
-            <span className="text-gray-300 transition-colors duration-300">{item.name}</span>
-            {/* Remove hover underline effect */}
+            <span className={item.name === activeItem ? "text-white" : "text-gray-300"}>{item.name}</span>
           </button>
         ))}
       </div>
@@ -114,7 +97,7 @@ export default function ChartFooter({ onItemClick, isDragging = false, shouldBlu
       <div className="absolute right-4">
         <button 
           onClick={() => setExpandedState(!expandedState)}
-          className="text-gray-500 hover:text-gray-300 transition-colors duration-200 p-1 rounded-md hover:bg-gray-800/30"
+          className="text-gray-500 hover:text-gray-300 transition-colors duration-200 p-1 rounded-md hover:bg-gray-900/50"
           title="More options"
         >
           <ChevronUp size={14} className={`transform transition-transform duration-300 ${expandedState ? 'rotate-180' : ''}`} />

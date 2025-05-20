@@ -84,9 +84,7 @@ const WatchlistPanel: React.FC<WatchlistPanelProps> = ({ isOpen, onToggle }) => 
               >
                 <div className="flex-[0.4] text-sm font-medium text-gray-300 truncate">{item.symbol}</div>
                 <div className="flex-[0.3] text-sm text-gray-300 text-right">{item.price}</div>
-                <div 
-                  className={`flex-[0.3] text-sm text-right ${item.changePercent >= 0 ? 'text-green-500' : 'text-red-500'}`}
-                >
+                <div className="flex-[0.3] text-sm text-white text-right">
                   {item.changePercent >= 0 ? '+' : ''}{item.changePercent.toFixed(2)}%
                 </div>
               </div>

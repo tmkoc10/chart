@@ -128,25 +128,25 @@ const IndicatorsPanel: React.FC<IndicatorsPanelProps> = ({ isOpen, onClose }) =>
           <div className="pl-[74px]">
             <div className="flex">
               <button
-                className={`px-5 py-3 text-sm font-medium ${activeTab === 'Indicators' ? 'bg-[#222] text-white border-b-2 border-green-500' : 'text-gray-400 hover:text-gray-200 transition-colors duration-150'}`}
+                className={`px-5 py-3 text-sm font-medium ${activeTab === 'Indicators' ? 'bg-[#222] text-white border-b-2 border-gray-700' : 'text-gray-400 hover:text-gray-200 transition-colors duration-150'}`}
                 onClick={() => setActiveTab('Indicators')}
               >
                 Indicators
               </button>
               <button
-                className={`px-5 py-3 text-sm font-medium ${activeTab === 'Strategies' ? 'bg-[#222] text-white border-b-2 border-blue-500' : 'text-gray-400 hover:text-gray-200 transition-colors duration-150'}`}
+                className={`px-5 py-3 text-sm font-medium ${activeTab === 'Strategies' ? 'bg-[#222] text-white border-b-2 border-gray-700' : 'text-gray-400 hover:text-gray-200 transition-colors duration-150'}`}
                 onClick={() => setActiveTab('Strategies')}
               >
                 Strategies
               </button>
               <button
-                className={`px-5 py-3 text-sm font-medium ${activeTab === 'Profiles' ? 'bg-[#222] text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-gray-200 transition-colors duration-150'}`}
+                className={`px-5 py-3 text-sm font-medium ${activeTab === 'Profiles' ? 'bg-[#222] text-white border-b-2 border-gray-700' : 'text-gray-400 hover:text-gray-200 transition-colors duration-150'}`}
                 onClick={() => setActiveTab('Profiles')}
               >
                 Profiles
               </button>
               <button
-                className={`px-5 py-3 text-sm font-medium ${activeTab === 'Patterns' ? 'bg-[#222] text-white border-b-2 border-yellow-500' : 'text-gray-400 hover:text-gray-200 transition-colors duration-150'}`}
+                className={`px-5 py-3 text-sm font-medium ${activeTab === 'Patterns' ? 'bg-[#222] text-white border-b-2 border-gray-700' : 'text-gray-400 hover:text-gray-200 transition-colors duration-150'}`}
                 onClick={() => setActiveTab('Patterns')}
               >
                 Patterns
@@ -189,7 +189,7 @@ const IndicatorsPanel: React.FC<IndicatorsPanelProps> = ({ isOpen, onClose }) =>
                     >
                       <span className="group-hover:translate-x-0.5 transition-transform duration-150">{indicator}</span>
                       {isBeta && (
-                        <span className="text-xs px-1.5 py-0.5 bg-[#222] text-green-400 rounded ml-2 font-medium">BETA</span>
+                        <span className="text-xs px-1.5 py-0.5 bg-[#222] text-white rounded ml-2 font-medium">BETA</span>
                       )}
                     </button>
                   </div>
